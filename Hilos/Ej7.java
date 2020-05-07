@@ -5,6 +5,7 @@ en un fichero. Se diseñarán dos hilos, uno se encargará
 de la lectura de las frases y el otro de la grabación del
 fichero. 
 */
+package Hilos;
 public class Ej7{
     public static void main(String[] args) {
         //Instanciamos la clase que contendra las frases

@@ -3,6 +3,7 @@ Escribir un programa que simule una calculadora. De forma que se realicen dos pr
 uno que realice las operaciones como tal y el principal donde se recogen los datos y 
 ejecute la operación correspondiente. 
 */
+package MPS;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

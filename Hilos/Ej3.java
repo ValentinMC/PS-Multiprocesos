@@ -3,6 +3,7 @@ Crear un programa en Java que ejecute tres hilos de forma concurrente.
 Uno de ellos debe sumar los números múltiplos de dos del 1 al 1000, 
 otro los múltiplos de 5, y otro, los que terminan en nueve.
 */
+package Hilos;
 public class Ej3{
     public static void main(String[] args) {
         //Creamos 3 hilos

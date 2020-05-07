@@ -4,6 +4,7 @@ por pantalla indicando su nombre y la hora actual, deberán ejecutarse
 en orden primero los 5 del primero, después los 5 del segundo, después 
 los 5 del tercero,…
 */
+package Hilos;
 public class Ej6{
     public static void main(String[] args) {
         //Instanciamos la clase Hilos que implementa Runnable

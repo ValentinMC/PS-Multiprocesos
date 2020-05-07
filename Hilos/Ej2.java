@@ -6,6 +6,7 @@ en un determinado texto. Cada hilo se encargará de contar una
 vocal diferente, se imprimirá por pantalla el contador de cada
  vocal y el total de vocales.
 */
+package Hilos;
 import java.util.Scanner;
 public class Ej2{
     public static void main(String[] args) {

@@ -1,3 +1,4 @@
+package Hilos;
 public class CHilosEj1 implements Runnable{
     
     Contador cont;

@@ -4,6 +4,7 @@ Escribir un programa que solicite al usuario cadenas, de manera que según se in
 una cadena se invierte el orden de sus letras. Tras producirse el cambio este se  guardará en un fichero de texto. 
 Por ejemplo: 'hola mundo' ---> 'odnum aloh' 
 */
+package MPS;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;

@@ -1,3 +1,5 @@
+package Hilos;
+
 public class HilosEj4 implements Runnable{
     int iTipo;
     int iMetros;

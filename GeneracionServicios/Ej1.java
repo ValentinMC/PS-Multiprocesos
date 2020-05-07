@@ -3,7 +3,7 @@ Crear un programa que simule el protocolo DNS,
 dado una dirección IP nos proporcione su url y
 viceversa.
 */
-
+package GeneracionServicios;
 import java.net.InetAddress;
 public class Ej1{
 	public static void main(String [] args){

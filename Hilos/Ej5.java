@@ -4,6 +4,7 @@ en clases diferentes. Un hilo imprime números pares
 del 1 al 10 y la suma de dichos números, y otro hilo 
 que imprime números impares del 1 al 10. 
 */
+package Hilos;
 
 public class Ej5{
     public static void main(String[] args) {

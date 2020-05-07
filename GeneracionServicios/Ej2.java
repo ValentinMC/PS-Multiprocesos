@@ -5,6 +5,7 @@
 Como resultado, el programa debe sacar por la salida estándar 
 cuántas etiquetas hay en esa página html
 */
+package GeneracionServicios;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,7 +29,7 @@ public class Ej2{
             las lineas en las que se encunetra ese fichero.
         */
         Ej2 ob2 = new Ej2();
-        //ob2.mvDescargaFichero(sURL);
+        ob2.mvDescargaFichero(sURL);
         ob2.mvBusquedaEtiqueta(sEtiqueta);
     }//main()
 

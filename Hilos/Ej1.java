@@ -3,6 +3,7 @@ Crear un programa en Java que cree 3 hilos, que se ejecutan 5 veces,
 de manera que  muestren por pantalla el nombre del hilo y un número 
 que indique por qué ejecución van (terminará en el número 15). 
 */
+package Hilos;
 
 public class Ej1{
   public static void main(String[] args) {

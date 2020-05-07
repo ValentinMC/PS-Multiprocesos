@@ -1,3 +1,5 @@
+package Hilos;
+
 import java.util.Scanner;
 
 public class HiloLectura7 implements Runnable{

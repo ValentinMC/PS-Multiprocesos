@@ -1,3 +1,4 @@
+package Hilos;
 public class Hilo1Ej5 implements Runnable{
     int iNumeroPar = 0;
     @Override

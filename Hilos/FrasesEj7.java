@@ -1,3 +1,5 @@
+package Hilos;
+
 import java.util.ArrayList;
 
 public class FrasesEj7{

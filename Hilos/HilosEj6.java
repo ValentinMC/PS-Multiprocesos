@@ -1,3 +1,5 @@
+package Hilos;
+
 public class HilosEj6 implements Runnable{
     //Creamos un contador para controlar las veces
     //que se mostrara la informacion por pantalla

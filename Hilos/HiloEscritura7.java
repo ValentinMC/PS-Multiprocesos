@@ -1,5 +1,6 @@
+package Hilos;
+
 import java.io.BufferedWriter;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.FileWriter;
 import java.io.File;

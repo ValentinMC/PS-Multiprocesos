@@ -1,3 +1,5 @@
+package Hilos;
+
 public class CHiloVocal implements Runnable{
     Contador oContGeneral;
     int iContadorVocal;
