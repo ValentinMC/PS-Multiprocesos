@@ -10,16 +10,16 @@ public class COper{
         System.out.println("El resultado es: "+ mvOperacion(dOperador1,dOperador2,sOperacion));
     }//main()
     static double mvOperacion(double idN1,double idN2,String isOperacion){
-        double osResultado=0;
-        switch(isOperacion){
-            case "+":
+        double osResultado = 0;
+        //Ponemos la operacion en mayusculas por si el usuario lo ha itroducido mal
+        switch(isOperacion.toUpperCase()){
+            case "MAS":
                 osResultado = idN1+idN2;
                 break;
-            case "-":
+            case "MENOS":
                 osResultado = idN1-idN2;
                 break;
-            case "*":
-                //La multiplicacion no funciona
+            case "POR":
                 osResultado = (idN1*idN2);
                 break;
         }//switch-case

@@ -18,7 +18,7 @@ public class Ej1{
         double dN1 = oTeclado.nextDouble();oTeclado.nextLine();
         System.out.println("Dime el segundo numero:");
         double dN2 = oTeclado.nextDouble();oTeclado.nextLine();
-        System.out.println("Dime la operacion: '+','-','*'");
+        System.out.println("Dime la operacion: 'mas','menos','por'");
         String sOperacion = oTeclado.nextLine();
 
         oTeclado.close();
