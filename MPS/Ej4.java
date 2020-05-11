@@ -10,9 +10,9 @@
 /*
 ------------------ POR PARTES ---------------
     - Programa Padre
-    - (5) Programas Hijos
+    - Programa Hijo
     - El padre se encarga de:
-        + Recoger el nombre del archivo y extension donde se van a mostrar los resultados
+        + Recoger el nombre del archivo y extension donde se va a mostrar el resultado
         + Mostrar el contenido de los archivos
         + Suma los subtotales de cada fichero y lo muestra por pantalla
     - Los hijos se encargan de:
@@ -30,72 +30,70 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 public class Ej4{
+    static String[] vocales = {"A","E","I","O","U"};
+    static File[] ficherosVocales = new File[5];
+    static Scanner oTeclado = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner oTeclado = new Scanner(System.in);
+
+        //Creamos los ficheros de las vocales
+        mvCrearFicherosVocales();
 
         //Pedimos el nombre del archivo donde se van a mostrar los resultados
         System.out.println("Digame el nombre del archivo y su extension");
         String fichero = oTeclado.nextLine();
 
         //Creamos el fichero
-        File fRes = new File(fichero);
-        try{
-            if(!fRes.exists())
-                fRes.createNewFile();
-        }catch(IOException io){
-            System.out.println(io);
-        }//try-catch
+        new File(fichero);
 
-        //Hacemos los calculos en este metodo
-        mvLanzadorSumaTotal(fichero);
-        //Leemos y guardamos el resultado en el fichero
+        //Llamamos al lanzador para guardar la suma de cada vocal en su fichero
+        mvLanzadorSumaParcial();
+        //Leemos los ficheros y guardamos el resultado final en el fichero dado por el usuario
         mvGuardarResultadoFinal(fichero);
+
         try{
             //Mostramos por pantalla el resultado del fichero introducido por el usuario
-            System.out.println(""+getLineasFichero(fichero));
+            System.out.println("EL numero de vocales totales son: "+getLineasFichero(fichero));
         }catch(Exception e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }//try-catch
 
         oTeclado.close();
     }//main()
+    private static void mvCrearFicherosVocales(){
+        int iContador = 0;
+        for (String vocal : vocales) {
+            String sNombreFVoc = "f_" + vocal + ".txt";
+            File file = new File(sNombreFVoc);
+            ficherosVocales[iContador]=file;
+            iContador++;
+        }//for
+    }//mvCrearFicherosVocales
 
-    private static void mvLanzadorSumaTotal(String isFichero){
-        String[] vocales = {"A","E","I","O","U"};
+    private static void mvLanzadorSumaParcial(){
+        //Este es el fichero donde esta guardada la frase a leer
         String sFichero = "frase.txt";
-
+        int iContador = 0;
         //Contamos cada vocal del fichero
-        for(int i=0; i<vocales.length;i++){
-            try{
-                //Creamos los ficheros de las vocales
-                String sNombreFVoc = "f"+vocales[i].toString()+".txt";
-                File file = new File(sNombreFVoc);
-                if (!file.exists())
-                  file.createNewFile();
-
-                //String linea = "";
+        for (String vocal : vocales) {
+            //Creamos los ficheros de las vocales
+            try {
                 //Inicializamos cada proceso y guardamos el resultado en su respectivo fichero
-                //Le pasamos el fichero a leer a cada proceso
-                ProcessBuilder pb = new ProcessBuilder("java","Vocal"+vocales[i].toString(),sFichero);
+                //Le pasamos el fichero a leer a cada proceso y la vocal que vamos a contar
+                ProcessBuilder pb = new ProcessBuilder("java", "ContVocales", sFichero, vocal);
                 pb.redirectErrorStream(true);
-                /*Process p = pb.start();
-                BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                while((linea=input.readLine())!=null)
-                    System.out.println(linea);
-                */
-                pb.redirectOutput(file);
+                pb.redirectOutput(ficherosVocales[iContador]);
                 pb.start();
-            }catch(Exception e){
-                System.out.println(e);
+                iContador++;
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }//try-catch
         }//for()
-
-
     }//mvLanzadorSumaTotal()
 
     //Metodo para leer el resultado del fichero
-    public static ArrayList<String> getLineasFichero(String isFichero) throws IOException{
-        ArrayList<String> lineas = new ArrayList<String>();
+    private static ArrayList<String> getLineasFichero(String isFichero) throws IOException{
+        ArrayList<String> lineas = new ArrayList<>();
         FileReader fr = new FileReader(isFichero);
         BufferedReader br =  new BufferedReader(fr);
         //Leemos las lineas del fichero
@@ -109,54 +107,46 @@ public class Ej4{
             fr.close();
             br.close();
         }catch(IOException io){
-            System.out.println(io);
+            System.out.println(io.getMessage());
         }//try-catch
         return lineas;
     }//getLineasFichero()
 
-    static void mvGuardarResultadoFinal(String isFichero){
+    private static void mvGuardarResultadoFinal(String isFichero){
         //Recopilamos los resultados, los sumamos y los guardamos en el fichero introducido por el usuario
-        int[] iNumVocales = new int[4];
-        String[] vocales = {"A","E","I","O","U"};
-        for(int i=0; i<iNumVocales.length;i++){
-            try{
+        int iNumeroTotalVocales = 0;
+        for (File fichero : ficherosVocales) {
+            int iNumeroVocLocal = 0;
+
+            try {
                 //Leemos el contenido del fichero
-                File file = new File("f"+vocales[i].toString()+".txt");
-                FileReader fr = new FileReader(file);
+                FileReader fr = new FileReader(fichero);
                 BufferedReader br = new BufferedReader(fr);
 
-                //Al haber solo un numero, no hace falta ningun while
-                String sNumero = br.readLine();
-                while(sNumero!=null)
-                    sNumero = br.readLine();
-                System.out.println(sNumero);
+                iNumeroVocLocal = Integer.parseInt(br.readLine());
 
-                //Convertimos el numero a integer y lo guardamos en el array
-                iNumVocales[i] = Integer.parseInt(sNumero);
-
-                //Cerramos los ficheros
                 br.close();
                 fr.close();
-            }catch(IOException io){
-                System.out.println(io);
+                System.out.println("El fichero " + fichero.toString() + " tiene: " + iNumeroVocLocal + " vocales");
+
+                //Sumamos el numero de vocales totales
+                iNumeroTotalVocales += iNumeroVocLocal;
+            } catch (Exception io) {
+                System.out.println(io.getMessage());
             }//try-catch
         }//for()
-
-        //Una vez recopilados los numeros, los sumamos y los mostramos
-        int iNumFinal = 0;
-        for(int i=0; i<iNumVocales.length;i++)
-            iNumFinal += iNumVocales[i];
 
         //Guardamos el resultado en un fichero
         try{
             File f = new File(isFichero);
             FileWriter fw = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(iNumFinal);
+            bw.write(String.valueOf(iNumeroTotalVocales));
+            System.out.println("Numero guardado!");
             bw.close();
             fw.close();
         }catch(IOException io){
-            System.out.println(io);
+            System.out.println(io.getMessage());
         }//try-catch
-    }//Loquesea()
+    }//mvGuardarResultadoFinal()
 }//Ej4
