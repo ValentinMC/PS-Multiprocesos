@@ -123,7 +123,11 @@ public class Ej4{
                 FileReader fr = new FileReader(fichero);
                 BufferedReader br = new BufferedReader(fr);
 
-                iNumeroVocLocal = Integer.parseInt(br.readLine());
+                try{
+                    iNumeroVocLocal = Integer.parseInt(br.readLine());
+                }catch(NumberFormatException nfe){
+                    System.out.println(nfe.getMessage());
+                }//try-catch
 
                 br.close();
                 fr.close();
