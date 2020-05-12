@@ -9,6 +9,8 @@ vocal diferente, se imprimirá por pantalla el contador de cada
 package Hilos;
 import java.util.Scanner;
 public class Ej2{
+    static String[] vocales = {"A","E","I","O","U"};
+
     public static void main(String[] args) {
         Scanner oTeclado = new Scanner(System.in);
 
@@ -24,11 +26,12 @@ public class Ej2{
     
         for(int i = 0; i<ovHilos.length;i++){
             //Creamos cuatro hilos que representaran cada vocal
-            ovHilos[i] = new CHiloVocal(sFrase,oCont,i); 
+            ovHilos[i] = new CHiloVocal(sFrase,oCont,vocales[i]); 
             Thread th = new Thread(ovHilos[i]);
             th.setName("Hilo "+i);
             th.start();
         }//for 
+        System.out.println("Se han encontrado "+oCont.getNumero()+" vocales en total");
         oTeclado.close();
     }//main()
 }//Ej2
