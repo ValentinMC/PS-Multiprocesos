@@ -83,7 +83,12 @@ public class Ej4{
                 ProcessBuilder pb = new ProcessBuilder("java", "ContVocales", sFichero, vocal);
                 pb.redirectErrorStream(true);
                 pb.redirectOutput(ficherosVocales[iContador]);
-                pb.start();
+                Process p = pb.start();
+                try{
+                    System.out.println(p.waitFor());
+                }catch(InterruptedException ie){
+                    System.out.println(ie.getMessage());
+                }//try-catch
                 iContador++;
             } catch (IOException e) {
                 System.out.println(e.getMessage());
