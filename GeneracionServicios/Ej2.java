@@ -6,18 +6,20 @@ Como resultado, el programa debe sacar por la salida estándar
 cuántas etiquetas hay en esa página html
 */
 package GeneracionServicios;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.FileWriter;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.io.FileReader;
 import java.io.EOFException;
 import java.io.File;
-
+/*
+https://www.bde.es/bde/es/
+*/
 public class Ej2{
     public static void main(String[] args) {
         //Recogemos los datos de la consola
@@ -41,13 +43,17 @@ public class Ej2{
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
 
+            
             //Escribimos la descarga en un fichero
             File f = new File("fichero.html");
-            FileWriter fr = new FileWriter(f);
+            FileWriter fw = new FileWriter(f);
+            BufferedWriter bw = new BufferedWriter(fw);
             String linea;
             while((linea=br.readLine())!=null)
-                fr.write(linea);
-            fr.close();
+                bw.write(linea);
+            
+            bw.close();
+            fw.close();
             br.close();
             isr.close();
             is.close();
@@ -63,15 +69,15 @@ public class Ej2{
             FileReader fr = new FileReader("fichero.html");
             BufferedReader br = new BufferedReader(fr);
             int iCOntadorEtiquetas = 0;
+            String linea;
             try{
-                String linea=br.readLine();
                 System.out.println("Buscando...");
-                while(linea!=null){
-                    if (linea.contains(etiqueta)){ //si la línea contiene el texto buscado se aumenta el contador
-                        System.out.println(iCOntadorEtiquetas);
+                while((linea=br.readLine())!=null){
+                    if(linea.contains(etiqueta)){ //si la línea contiene el texto buscado se aumenta el contador
+                       // System.out.println(linea);
                         iCOntadorEtiquetas++;
                     }//if
-                    br.readLine();
+                    linea = br.readLine();
                 }//while
             }catch(EOFException eof){
                 System.out.println("Fin de fichero");
