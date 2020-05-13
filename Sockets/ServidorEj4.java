@@ -4,13 +4,10 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -26,29 +23,9 @@ class ServidorEj4 {
     //Declaramos el fichero con el que vamos a trabajar
     static File f = new File("objetos.bin");
 
-
-    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
-        //Creamos un fichero binario con los nombres y objetos si no existe ya
-        if(!f.exists()){
-            try{
-                FileOutputStream fos = new FileOutputStream(f);
-                DataOutputStream dos = new DataOutputStream(fos);
-
-                for(String sNombre : ClienteEj4.asNombreObjetos){
-                    //Los gramos seran aleatorios entre 1 y 1000
-                    dos.writeUTF(sNombre);
-                    dos.writeInt((int)(1000 * Math.random()));
-                }//for
-
-                dos.close();
-                fos.close();
-                    
-            }catch(FileNotFoundException fnf){
-                System.out.println(fnf);
-            }catch(IOException io){
-                System.out.println(io);
-            }//try-cacth
-        }//if(fichero existe)
+    public static void main(String[] args){
+        // Creamos un fichero binario con los nombres y objetos si no existe ya
+        mvCrearFicheroObjetos();
 
         //Nos comunicamos con el cliente
         try{
@@ -63,20 +40,19 @@ class ServidorEj4 {
                 Socket s = ss.accept();
                 if(s.isConnected())
                     System.out.println("Cliente conectado!");
-                
-                InputStream is = s.getInputStream();
-                ObjectInputStream ios = new ObjectInputStream(is);
+
+                ObjectInputStream ios = new ObjectInputStream(s.getInputStream());
 
                 ioMochila = (CMochila) ios.readObject();
                 System.out.println("Mochila de "+ioMochila.getsNombre()+" detectada!\n");
-                ios.close();
-                is.close();
+
 
                 //Metemos los objetos en un ArrayList
                 ArrayList<CObjeto> alObjeto = ioMochila.getaListaObjetos();
 
                 //Comparamos los objetos con los del fichero y les añadimos un peso
                 System.out.println("Aniadiendo pesos...\n");
+                //Se podria hacer un metodo donde le pasamos el ArrayList de objetos y el objeto ioMochila
                 try{
                     FileInputStream fis = new FileInputStream(f);
                     DataInputStream dis = new DataInputStream(fis);
@@ -101,24 +77,42 @@ class ServidorEj4 {
                     fis.close();
                     dis.close();
                 }catch(IOException io){
-                    System.out.println(io);
+                    System.out.println(io.getMessage());
                 }//try-catch lectura fichero
 
                 //Volvemos a enviar el objeto (ahora modificado) al usuario
-                OutputStream os = s.getOutputStream();
-                ObjectOutputStream oos = new ObjectOutputStream(os);
+                ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
                 System.out.println("Mochila devuelta!");
                 oos.writeObject(ioMochila);
 
                 //Cerramos todo excepto el servidor
                 oos.close();
-                os.close();
+                ios.close();
                 s.close();
             }//while(escucha)
-        }catch(IOException io){
-            System.out.println(io);
-        }catch(ClassNotFoundException cnf){
-            System.out.println(cnf);
+        }catch(IOException | ClassNotFoundException io){
+            System.out.println(io.getMessage());
         }//try-cacth
     }//main()
+
+    static void mvCrearFicheroObjetos(){
+        if(!f.exists()){
+            try{
+                FileOutputStream fos = new FileOutputStream(f);
+                DataOutputStream dos = new DataOutputStream(fos);
+
+                for(String sNombre : ClienteEj4.asNombreObjetos){
+                    //Los gramos seran aleatorios entre 1 y 1000
+                    dos.writeUTF(sNombre);
+                    dos.writeInt((int)(1000 * Math.random()));
+                }//for
+
+                dos.close();
+                fos.close();
+
+            } catch(IOException fnf){
+                System.out.println(fnf.getMessage());
+            }//try-cacth
+        }//if(fichero existe)
+    }//mvCrearFicheroObjetos
 }//ServidorEj4

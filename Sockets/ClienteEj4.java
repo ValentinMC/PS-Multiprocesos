@@ -1,10 +1,7 @@
 package Sockets;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -40,28 +37,30 @@ correspondientes. La mochila también guarda el nombre del dueño de está.
     -Instanciamos cada uno de los objetos del usuario.
     -Añadimos los objetos al ArrayList.
     -Instanciamos un objeto de la clase CMochila.
-    -Pasamos al servidor el objeto mediante el ByteArrayOutputStream.
+    -Pasamos al servidor el objeto mediante el ObjectOutputStream.
+    -Calculamos el peso total en el cliente y lo mostramos por pantalla
 */
 public class ClienteEj4 {
     static Scanner oTeclado = new Scanner(System.in);
-    
-    //Este es el objeto que se le pasara al servidor
-    static CMochila oMochila;
-    
-    /*  Este es el Array con los nombres que se 
+
+    /*  Este es el Array con los nombres que se
         va a mostrar al usuario. Estamos suponiendo
         que el numero de objetos existentes es fijo.
 
+        Ademas es publico para que lo pueda utilizar
+        la clase servidor para crear un fichero de objetos
+        a partir de los que hay en este Array
+
     */
     public static String[] asNombreObjetos = {"Libro de fisica","Estuche","Botella de agua","Cuaderno","Agenda","Portatil"};
-    
+
     //Este es el ArrayList donde se van a guardar los objetos de la clase CObjeto
     static ArrayList<CObjeto> alObjeto = new ArrayList<>();
 
     //Variables para Socket
     static final String HOST = "127.0.0.1";
     static final int iPuerto = 12388;
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) {
         try{
             //Nos intentamos conectar al servidor
             Socket sc = new Socket(HOST,iPuerto);
@@ -78,35 +77,29 @@ public class ClienteEj4 {
                     alObjeto.add(new CObjeto(ob));
             }//for
 
-            //Instanciamos el objeto oMochila declarado anteriormente
-            oMochila = new CMochila(sNombreMochila,alObjeto);
+            //Instanciamos el objeto oMochila
+            CMochila oMochila = new CMochila(sNombreMochila,alObjeto);
 
             //Enviamos el objeto al servidor
-            OutputStream os = sc.getOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(os);
+            ObjectOutputStream oos = new ObjectOutputStream(sc.getOutputStream());
             oos.writeObject(oMochila);
-            oos.close();
-            os.close();
+
 
             //Recibimos el objeto modificado del servidor
-            InputStream is = sc.getInputStream();
-            ObjectInputStream ois = new ObjectInputStream(is);
-            
+            ObjectInputStream ois = new ObjectInputStream(sc.getInputStream());
+
             //Sobreescribimos la informacion que teniamos en este objeto guardada con la nueva
             oMochila = (CMochila) ois.readObject();
             //Imprimimos la informacion
-            System.out.println(oMochila.toString()); 
+            System.out.println(oMochila.toString()+"\n\n"+oMochila.msCalcularPesoTotal());
+
+            oos.close();
             ois.close();
-            is.close();
             sc.close();
-        }catch(IOException ioe){
+        }catch(IOException | ClassNotFoundException ioe){
             System.out.println(ioe);
-        }catch(ClassNotFoundException cnf){
-            System.out.println(cnf);
         }//try-catch
-
     }//main
-
 }//ClienteEj4
 
 

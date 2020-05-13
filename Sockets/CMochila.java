@@ -1,6 +1,7 @@
 package Sockets;
 import java.io.Serializable;
 import java.util.ArrayList;
+
 public class CMochila implements Serializable{
     private String sNombre;
     private ArrayList<CObjeto> aListaObjetos;
@@ -11,10 +12,10 @@ public class CMochila implements Serializable{
     }//CMochila
 
     public String toString(){
-        String respuesta= "En la mochila de "+getsNombre()+" hay: \n";
+        StringBuilder respuesta= new StringBuilder("En la mochila de " + getsNombre() + " hay: \n");
         for(CObjeto ob: getaListaObjetos())
-            respuesta+=ob.getsNombreOb()+" que pesa "+ob.getiPeso()+" gramos \n";
-        return respuesta;
+            respuesta.append(" -").append(ob.getsNombreOb()).append(" que pesa ").append(ob.getiPeso()).append(" gramos \n");
+        return respuesta.toString();
     }//toString()
     public String getsNombre() {
         return sNombre;
@@ -33,4 +34,11 @@ public class CMochila implements Serializable{
     public void setPesoObjetos(CObjeto ob,int iiPeso){
         ob.setiPeso(iiPeso);
     }//setPeso
+
+    public String msCalcularPesoTotal(){
+        int iPesoTotal = 0;
+        for(CObjeto o : aListaObjetos)
+            iPesoTotal += o.getiPeso();
+        return "El peso TOTAL de la mochila es :"+iPesoTotal+" gr.";
+    }//msCalcularPesoTotal
 }//CMochila
