@@ -1,26 +1,29 @@
 package Hilos;
-
-public class HilosEj4 implements Runnable{
+public class HilosEj3 implements Runnable{
     int iTipo;
-    int iMetros;
-
-    public HilosEj4(int ioTipo){
-        this.iTipo = ioTipo;
-    }//HilosEj4
+    public HilosEj3(int iiTipo){
+        this.iTipo = iiTipo;
+    }//Constructor
+    
     @Override
-
     public void run() {
+        int iContador = 0;
         switch(iTipo){
             case 0:
-                if(iMetros==100){
-                    System.out.println(Thread.currentThread().getName()+" ha ganado la carrera");
-                    
-                }
+                //Sumamos e imprimimos los numeros por pantalla del primer hilo
+                while(iContador < 1000)
+                    System.out.println(iContador+=2);
                 break;
             case 1:
+                ////Sumamos e imprimimos los numeros por pantalla del segundo hilo
+                while(iContador < 1000)
+                    System.out.println(iContador+=5);
                 break;
-            case 3:
+            case 2:
+                iContador = 9;
+                while(iContador < 999)
+                 System.out.println(iContador+=10);
                 break;
-        }//switch-case
+        }//switch-case()
     }//run()
-}//HilosEj4
+}//HilosEj3 
