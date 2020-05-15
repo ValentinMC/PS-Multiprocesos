@@ -9,11 +9,11 @@ public class Ej8Banco {
         this.setiDineroBanco(500);
     }// Constructor Banco
 
-    public int getiDineroBanco() {
+    public synchronized int getiDineroBanco() {
         return iDineroBanco;
     }
 
-    public void setiDineroBanco(int iDineroBanco) {
+    public synchronized void setiDineroBanco(int iDineroBanco) {
         this.iDineroBanco = iDineroBanco;
     }
 

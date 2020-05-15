@@ -3,7 +3,6 @@ public class Ej8EstrategiaNConcreto implements Runnable{
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
         
     }//run()
 
@@ -12,7 +11,7 @@ public class Ej8EstrategiaNConcreto implements Runnable{
     Ej8Ruleta oRuleta;
     private int iDineroHilo;
 
-    public Ej8EstrategiaNConcreto(Ej8ContadorBeneficios ioBen, Ej8Banco ioBanco) {
+    public Ej8EstrategiaNConcreto(Ej8ContadorBeneficios ioBen, Ej8Banco ioBanco, int iNumeroRuleta) {
         this.oBeneficios = ioBen;
         this.oBanco = ioBanco;
     }// Constructor Hilo
