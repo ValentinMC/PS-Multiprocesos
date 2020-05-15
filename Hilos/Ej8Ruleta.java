@@ -67,14 +67,45 @@ sucesivamente)
 
 */
 package Hilos;
+
 public class Ej8Ruleta {
     // Al ser esta la ruleta se crean sus propias propiedades
-    static int iNumeroRuleta;
+    private int iNumeroRuleta;
     private int iDineroPartida;
 
     public static void main(String[] args) {
 
+        Ej8ContadorBeneficios oBeneficios = new Ej8ContadorBeneficios();
+        Ej8Banco oBanco = new Ej8Banco();
+        Ej8EstrategiaNConcreto oNConcreto[] = new Ej8EstrategiaNConcreto[4];
+        Ej8Ruleta oRuleta = new Ej8Ruleta();
+
+        
+        // Comienza la partida
+        for (int i = 0; i < oNConcreto.length; i++) {
+            oNConcreto[i] = new Ej8EstrategiaNConcreto(oBeneficios, oBanco,oRuleta.miSacarNumero(););
+            Thread th = new Thread(oNConcreto[i]);
+        } // for()
     }// main()
+
+
+
+    public synchronized void mvCogerDineroApuesta(int iDineroHilo) {
+        setiDineroPartida(getiDineroPartida() + iDineroHilo);
+    }//mvCogerDineroApuesta
+
+    public int miSacarNumero(){
+        setiNumeroRuleta((int) (Math.random() * 36 + 1));
+        return getiNumeroRuleta();
+    }//miSacarNumero()
+
+    public int getiNumeroRuleta() {
+        return iNumeroRuleta;
+    }
+
+    public void setiNumeroRuleta(int iNumeroRuleta) {
+        this.iNumeroRuleta = iNumeroRuleta;
+    }
 
     public int getiDineroPartida() {
         return iDineroPartida;
@@ -83,10 +114,4 @@ public class Ej8Ruleta {
     public void setiDineroPartida(int iDineroPartida) {
         this.iDineroPartida = iDineroPartida;
     }
-
-    public synchronized void mvCogerDineroApuesta(int iDineroHilo) {
-        setiDineroPartida(getiDineroPartida() + iDineroHilo);
-    }//mvCogerDineroApuesta
-
-    
 }//Ej8
