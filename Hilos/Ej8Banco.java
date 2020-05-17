@@ -1,5 +1,4 @@
 package Hilos;
-
 public class Ej8Banco {
     // Usare integers ya que los numeros del ejercicio
     // son redondos y no se juega con decimales

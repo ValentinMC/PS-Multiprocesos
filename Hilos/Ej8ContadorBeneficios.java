@@ -1,5 +1,4 @@
 package Hilos;
-
 public class Ej8ContadorBeneficios {
     private int iEurosGrupo;
 
