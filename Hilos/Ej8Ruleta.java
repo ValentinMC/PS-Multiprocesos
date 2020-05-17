@@ -74,18 +74,27 @@ public class Ej8Ruleta {
     private int iDineroPartida;
 
     public static void main(String[] args) {
-
+        //Instanciamos los objetos necesarios para el ejercicio
         Ej8ContadorBeneficios oBeneficios = new Ej8ContadorBeneficios();
         Ej8Banco oBanco = new Ej8Banco();
-        Ej8EstrategiaNConcreto oNConcreto[] = new Ej8EstrategiaNConcreto[4];
-        Ej8Ruleta oRuleta = new Ej8Ruleta();
 
+        Ej8EstrategiaNConcreto oNConcreto[] = new Ej8EstrategiaNConcreto[4];
+        //Ej8EstrategiaMaringala oMaringala[] = new Ej8EstrategiaMaringala[4];
+        //Ej8EstrategiaParImpar oParImpar[] = new Ej8EstrategiaParImpar[4];
         
+        Ej8Ruleta oRuleta = new Ej8Ruleta();
+        int iNumeroRuleta = oRuleta.miSacarNumero();
+        while(iNumeroRuleta!=0){
         // Comienza la partida
-        for (int i = 0; i < oNConcreto.length; i++) {
-            oNConcreto[i] = new Ej8EstrategiaNConcreto(oBeneficios, oBanco,oRuleta.miSacarNumero(););
-            Thread th = new Thread(oNConcreto[i]);
-        } // for()
+            for (int i = 0; i < oNConcreto.length; i++) {
+                oNConcreto[i] = new Ej8EstrategiaNConcreto(oBeneficios, oBanco,iNumeroRuleta);
+                Thread th = new Thread(oNConcreto[i]);
+                th.setName("Hilo "+i);
+                th.start();
+            } // for()
+
+        }//while()
+        System.out.println("La partida ha terminado! El numero ha sido 0!");
     }// main()
 
 

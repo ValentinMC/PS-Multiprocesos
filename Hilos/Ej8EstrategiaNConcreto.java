@@ -1,19 +1,27 @@
 package Hilos;
 public class Ej8EstrategiaNConcreto implements Runnable{
+    
+    Ej8ContadorBeneficios oBeneficios;
+    Ej8Banco oBanco;
+    int iNumeroRuleta;
+    private int iDineroHilo;
+
 
     @Override
     public void run() {
-        
+        if(iNumeroRuleta == miApostar()){
+            System.out.println(Thread.currentThread().getName()+" ha ganado! Ahora tiene "+getiDineroHilo());
+        }else{
+            System.out.println(Thread.currentThread().getName()+" ha perdido! Ahora tiene "+getiDineroHilo());
+        }//if-else
     }//run()
 
-    Ej8ContadorBeneficios oBeneficios;
-    Ej8Banco oBanco;
-    Ej8Ruleta oRuleta;
-    private int iDineroHilo;
+
 
     public Ej8EstrategiaNConcreto(Ej8ContadorBeneficios ioBen, Ej8Banco ioBanco, int iNumeroRuleta) {
         this.oBeneficios = ioBen;
         this.oBanco = ioBanco;
+        this.iNumeroRuleta = iNumeroRuleta;
     }// Constructor Hilo
 
     public int getiDineroHilo() {
@@ -26,20 +34,14 @@ public class Ej8EstrategiaNConcreto implements Runnable{
 
     public int miApostar() {
         int iNumero = (int) (Math.random() * 36 + 1);
-        oRuleta.mvCogerDineroApuesta(10);
-        
+        setiDineroHilo(getiDineroHilo()-10);
+        oBanco.setiDineroBanco(oBanco.getiDineroBanco()+10);
         return iNumero;
     }//miApostar()
-    /*
-    NumeroGanado(){
-        la banca nos devuelve lo apostado *36
-    }
-
-    miPerder(){
-        el dinero va a la banca
-    }
-    */
-
-
     
-}
+    public void miNumeroGanado(){
+        setiDineroHilo(getiDineroHilo()+360);
+
+    }
+
+}//EjEstrategiaNConcreto
