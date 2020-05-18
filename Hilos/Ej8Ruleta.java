@@ -70,44 +70,54 @@ package Hilos;
 public class Ej8Ruleta {
     // Al ser esta la ruleta se crean sus propias propiedades
     private int iNumeroRuleta;
-    private int iDineroPartida;
-
     public static void main(String[] args) throws InterruptedException {
         //Instanciamos los objetos necesarios para el ejercicio
         Ej8ContadorBeneficios oBeneficios = new Ej8ContadorBeneficios();
         Ej8ContadorBeneficios oBeneficiosParImpar = new Ej8ContadorBeneficios();
+        Ej8ContadorBeneficios oBeneficiosMaringala = new Ej8ContadorBeneficios();
+
         Ej8Banco oBanco = new Ej8Banco();
 
         Ej8EstrategiaNConcreto oNConcreto[] = new Ej8EstrategiaNConcreto[4];
-        //Ej8EstrategiaMaringala oMaringala[] = new Ej8EstrategiaMaringala[4];
+        Ej8EstrategiaMaringala oMaringala[] = new Ej8EstrategiaMaringala[4];
         Ej8EstrategiaParImpar oParImpar[] = new Ej8EstrategiaParImpar[4];
         
         Ej8Ruleta oRuleta = new Ej8Ruleta();
         int iNumeroRuleta = oRuleta.miSacarNumero();
         boolean bSeguir = true;
         int iNumeroPartida = 0;
+
         // Comienza la partida
         for (int i = 0; i < oNConcreto.length; i++) {
             oNConcreto[i] = new Ej8EstrategiaNConcreto(oBeneficios, oBanco,iNumeroRuleta);
             oParImpar[i] = new Ej8EstrategiaParImpar(oBeneficiosParImpar, oBanco, iNumeroRuleta);
+            oMaringala[i] = new Ej8EstrategiaMaringala(oBeneficiosMaringala, oBanco, iNumeroRuleta);
         }//Creacion de los hilos
+
         while(bSeguir){
-            System.out.println(iNumeroPartida+"-------------------------------");
+            System.out.println(iNumeroPartida+"------------------------------- Numero Ruleta: "+iNumeroRuleta);
             if(iNumeroRuleta!=0){
                 for (int i = 0; i < oNConcreto.length; i++) {
                     oNConcreto[i].setiNumeroRuleta(iNumeroRuleta);
                     oParImpar[i].setiNumeroRuleta(iNumeroRuleta);
+                    oMaringala[i].setiNumeroRuleta(iNumeroRuleta);
+
                     Thread th = new Thread(oNConcreto[i]);
                     Thread thPI = new Thread(oParImpar[i]);
+                    Thread thMa = new Thread(oMaringala[i]);
 
                     th.setName("Hilo "+i+" NCo");
                     thPI.setName("Hilo "+i+" PI");
+                    thMa.setName("Hilo "+i+" MA");
 
                     th.start();
                     thPI.start();
+                    thMa.start();
                 } // for()
                 iNumeroPartida++;
-                //Thread.sleep(3000);
+                Thread.sleep(50);
+                System.out.println("BANCO: "+oBanco.getiDineroBanco());
+                Thread.sleep(3000);
                 iNumeroRuleta = oRuleta.miSacarNumero();
             }else bSeguir = false;
         }//while()
@@ -115,14 +125,9 @@ public class Ej8Ruleta {
         System.out.println("La partida ha terminado! El numero ha sido 0!");
         System.out.println("Se han recaudado "+oBeneficios.getiEurosGrupo()+" para el NConcreto");
         System.out.println("Se han recaudado "+oBeneficiosParImpar.getiEurosGrupo()+" para el ParImpar");
-
+        System.out.println("Se han recaudado "+oBeneficiosMaringala.getiEurosGrupo()+" para el Maringala");
+        System.out.println("Dinero restante en el banco: "+oBanco.getiDineroBanco());
     }// main()
-
-
-
-    public synchronized void mvCogerDineroApuesta(int iDineroHilo) {
-        setiDineroPartida(getiDineroPartida() + iDineroHilo);
-    }//mvCogerDineroApuesta
 
     public int miSacarNumero(){
         setiNumeroRuleta((int) (Math.random() * 36));
@@ -137,11 +142,4 @@ public class Ej8Ruleta {
         this.iNumeroRuleta = iNumeroRuleta;
     }
 
-    public int getiDineroPartida() {
-        return iDineroPartida;
-    }
-
-    public void setiDineroPartida(int iDineroPartida) {
-        this.iDineroPartida = iDineroPartida;
-    }
 }//Ej8

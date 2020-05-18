@@ -8,21 +8,28 @@ public class Ej8EstrategiaNConcreto implements Runnable {
 
     @Override
     public void run() {
-        int iNumeroHilo = miApostar();
-        if (iNumeroRuleta == iNumeroHilo) {
-            miNumeroGanado();
-            System.out.println("R:" + iNumeroRuleta + "H:" + iNumeroHilo + "-->" + Thread.currentThread().getName()
-                    + " ha ganado! Ahora tiene " + getiDineroHilo() + " " + "y el banco " + oBanco.getiDineroBanco());
+        if(bTieneDinero()){
+            int iNumeroHilo = miApostar();
+            if (iNumeroRuleta == iNumeroHilo) {
+                miNumeroGanado();
+                System.out.println(Thread.currentThread().getName()+ " ha ganado! Ahora tiene " + getiDineroHilo());
 
-        } else {
-            mvNumeroPerdido();
-            System.out.println("R:" + iNumeroRuleta + "H:" + iNumeroHilo + "-->" + Thread.currentThread().getName()
-                    + " ha perdido! Ahora tiene " + getiDineroHilo() + " " + "y el banco " + oBanco.getiDineroBanco());
+            } else {
+                mvNumeroPerdido();
+                System.out.println(Thread.currentThread().getName()+ " ha perdido! Ahora tiene " + getiDineroHilo());
+            } // if-else
+        }else 
+            System.out.println(Thread.currentThread().getName()+" se ha quedado sin dinero para apostar");
 
-        } // if-else
     }//run()
 
 
+
+    private boolean bTieneDinero() {
+        if(getiDineroHilo()<10)
+            return false;
+        else return true;
+    }
 
     public Ej8EstrategiaNConcreto(Ej8ContadorBeneficios ioBen, Ej8Banco ioBanco, int iNumeroRuleta) {
         this.oBeneficios = ioBen;
@@ -36,38 +43,48 @@ public class Ej8EstrategiaNConcreto implements Runnable {
     }//setiNumeroRuleta()
 
     public int miApostar() {
+        //Sacamos un numero al azar
         int iNumero = (int) (Math.random() * 36 + 1);
+        //Quitamos el valor de la apuesta al hilo
         mvDisminuirDineroH(10);
+        //Le damos el dinero al banco
         oBanco.setiDineroBanco(oBanco.getiDineroBanco()+10);
         return iNumero;
     }//miApostar()
 
-    public int getiDineroHilo() {
-        return iDineroHilo;
-    }
+    public void miNumeroGanado(){
+        //Le quitamos el dinero al banco dependiendo del hilo que sea
+        //y del dinero que disponga el banco
+        int iDineroDisponibleBanco = oBanco.getDineroGanado(Thread.currentThread());
+        //Aumentamos el dinero al hilo
+        mvAumetnarDineroH(iDineroDisponibleBanco);
+        //Le quitamos el dinero al banco
+        oBanco.setiDineroBanco(oBanco.getiDineroBanco()-iDineroDisponibleBanco);
+        //Aumentamos los beneficios del grupo
+        oBeneficios.setAumentoiEurosGrupo(iDineroDisponibleBanco);
+    }//iNumeroGanado()
 
-    public void setiDineroHilo(int iDineroHilo) {
-        this.iDineroHilo = iDineroHilo;
-    }
+    public void mvAumetnarDineroH(int iDinero){
+        int iNuevoDinero = getiDineroHilo()+iDinero;
+        setiDineroHilo(iNuevoDinero);
+    }//AUMENTAR DINERO HILO
+
     public void mvDisminuirDineroH(int iDinero){
         int iNuevoDinero = getiDineroHilo()-iDinero;
         setiDineroHilo(iNuevoDinero);
     }//DISMINUIR DINERO HILO
 
-    public void mvAumetnarDineroH(int iDinero){
-        int iNuevoDinero = getiDineroHilo()+iDinero;
-        setiDineroHilo(iNuevoDinero);
-    }//DISMINUIR DINERO HILO
-    
-    public void miNumeroGanado(){
-        mvAumetnarDineroH(360);
-        oBanco.setiDineroBanco(oBanco.getiDineroBanco()-360);
-        oBeneficios.setAumentoiEurosGrupo(360);
-    }//iNumeroGanado()
+    public int getiDineroHilo() {
+        return iDineroHilo;
+    }//getDineroHilo()
+
+    public void setiDineroHilo(int iDineroHilo) {
+        this.iDineroHilo = iDineroHilo;
+    }//setDineroHilo()
+
 
     public void mvNumeroPerdido(){
-        mvDisminuirDineroH(10);
         oBeneficios.setAumentoiEurosGrupo(-10);
-    }
+    }//mvNumeroPerdido()
 
 }//EjEstrategiaNConcreto
