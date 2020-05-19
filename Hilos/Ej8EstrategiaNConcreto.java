@@ -9,8 +9,10 @@ public class Ej8EstrategiaNConcreto implements Runnable {
     @Override
     public void run() {
         if(bTieneDinero()){
+            //Apostamos siempre y cuando el hilo tenga dinero
             int iNumeroHilo = miApostar();
-            if (iNumeroRuleta == iNumeroHilo) {
+            //Dependiendo si coinciden los numeros o no, se hace una operacion u otra
+            if (getiNumeroRuleta() == iNumeroHilo) {
                 miNumeroGanado();
                 System.out.println(Thread.currentThread().getName()+ " ha ganado! Ahora tiene " + getiDineroHilo());
 
@@ -20,29 +22,29 @@ public class Ej8EstrategiaNConcreto implements Runnable {
             } // if-else
         }else 
             System.out.println(Thread.currentThread().getName()+" se ha quedado sin dinero para apostar");
-
     }//run()
-
-
 
     private boolean bTieneDinero() {
         if(getiDineroHilo()<10)
             return false;
         else return true;
-    }
+    }//Verificamos si el hilo tiene dinero
 
-    public Ej8EstrategiaNConcreto(Ej8ContadorBeneficios ioBen, Ej8Banco ioBanco, int iNumeroRuleta) {
+    private int getiNumeroRuleta() {
+        return this.iNumeroRuleta;
+    }//GETTER iNumeroRuleta()
+
+    public Ej8EstrategiaNConcreto(Ej8ContadorBeneficios ioBen, Ej8Banco ioBanco) {
         this.oBeneficios = ioBen;
         this.oBanco = ioBanco;
-        this.iNumeroRuleta = iNumeroRuleta;
         this.iDineroHilo = 100;
     }// Constructor Hilo
 
     public void setiNumeroRuleta(int iiNumeroRuleta){
         this.iNumeroRuleta = iiNumeroRuleta;
-    }//setiNumeroRuleta()
+    }//SETTER iNumeroRuleta
 
-    public int miApostar() {
+    private int miApostar() {
         //Sacamos un numero al azar
         int iNumero = (int) (Math.random() * 36 + 1);
         //Quitamos el valor de la apuesta al hilo
@@ -52,19 +54,19 @@ public class Ej8EstrategiaNConcreto implements Runnable {
         return iNumero;
     }//miApostar()
 
-    public void miNumeroGanado(){
+    private void miNumeroGanado(){
         //Le quitamos el dinero al banco dependiendo del hilo que sea
         //y del dinero que disponga el banco
         int iDineroDisponibleBanco = oBanco.getDineroGanado(Thread.currentThread());
         //Aumentamos el dinero al hilo
-        mvAumetnarDineroH(iDineroDisponibleBanco);
+        mvAumentarDineroH(iDineroDisponibleBanco);
         //Le quitamos el dinero al banco
         oBanco.setiDineroBanco(oBanco.getiDineroBanco()-iDineroDisponibleBanco);
         //Aumentamos los beneficios del grupo
         oBeneficios.setAumentoiEurosGrupo(iDineroDisponibleBanco);
-    }//iNumeroGanado()
+    }//miNumeroGanado()
 
-    public void mvAumetnarDineroH(int iDinero){
+    public void mvAumentarDineroH(int iDinero){
         int iNuevoDinero = getiDineroHilo()+iDinero;
         setiDineroHilo(iNuevoDinero);
     }//AUMENTAR DINERO HILO
@@ -82,8 +84,9 @@ public class Ej8EstrategiaNConcreto implements Runnable {
         this.iDineroHilo = iDineroHilo;
     }//setDineroHilo()
 
-
     public void mvNumeroPerdido(){
+        /*Cuando se pierde la partida simplemente se disminuira
+        el valor de los beneficios del grupo.*/
         oBeneficios.setAumentoiEurosGrupo(-10);
     }//mvNumeroPerdido()
 

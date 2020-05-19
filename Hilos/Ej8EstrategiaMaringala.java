@@ -11,7 +11,7 @@ public class Ej8EstrategiaMaringala implements Runnable {
     public void run() {
         if (bTieneDinero()) {
             int iNumeroHilo = miApostar();
-            if (iNumeroRuleta == iNumeroHilo) {
+            if (getiNumeroRuleta() == iNumeroHilo) {
                 miNumeroGanado();
                 System.out.println(Thread.currentThread().getName() + " ha ganado! Ahora tiene " + getiDineroHilo());
 
@@ -21,21 +21,21 @@ public class Ej8EstrategiaMaringala implements Runnable {
             } // if-else
         } else
             System.out.println(Thread.currentThread().getName() + " se ha quedado sin dinero para apostar");
-
     }// run()
-
-
 
     private boolean bTieneDinero() {
         if(getiDineroHilo()<getiDineroApuesta())
             return false;
         else return true;
-    }
+    }//bTieneDinero()
 
-    public Ej8EstrategiaMaringala(Ej8ContadorBeneficios ioBen, Ej8Banco ioBanco, int iNumeroRuleta) {
+    private int getiNumeroRuleta() {
+        return this.iNumeroRuleta;
+    }//GETTER iNumeroRuleta()
+
+    public Ej8EstrategiaMaringala(Ej8ContadorBeneficios ioBen, Ej8Banco ioBanco) {
         this.oBeneficios = ioBen;
         this.oBanco = ioBanco;
-        this.iNumeroRuleta = iNumeroRuleta;
         this.iDineroHilo = 100;
         this.iDineroApuesta = 10;
     }// Constructor Hilo
@@ -85,17 +85,17 @@ public class Ej8EstrategiaMaringala implements Runnable {
     }//setDineroHilo()
 
 
-    public void mvNumeroPerdido(){
+    private void mvNumeroPerdido(){
         oBeneficios.setAumentoiEurosGrupo(getiDineroApuesta());
         setiDineroApuesta(getiDineroApuesta()*2);
     }//mvNumeroPerdido()
 
     public int getiDineroApuesta() {
         return iDineroApuesta;
-    }
+    }//GETTER iDineroApuesta
 
     public void setiDineroApuesta(int iDineroApuesta) {
         this.iDineroApuesta = iDineroApuesta;
-    }
+    }//SETTER iDineroApuesta
 
 }//EjEstrategiaNConcreto
