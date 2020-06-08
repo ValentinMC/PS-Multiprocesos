@@ -24,7 +24,7 @@ public class Cambio{
         //Al tratarse de una simple linea, lo haremos de forma simple
         try{
             File f = new File("Ej2Vuelta.txt");
-            FileWriter fw = new FileWriter(f);
+            FileWriter fw = new FileWriter(f,true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(isVuelta);
             bw.close();

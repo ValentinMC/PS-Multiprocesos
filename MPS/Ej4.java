@@ -40,8 +40,7 @@ public class Ej4{
         mvCrearFicherosVocales();
 
         //Pedimos el nombre del archivo donde se van a mostrar los resultados
-        System.out.println("Digame el nombre del archivo y su extension");
-        String fichero = oTeclado.nextLine();
+        String fichero = args[0];
 
         //Creamos el fichero
         new File(fichero);

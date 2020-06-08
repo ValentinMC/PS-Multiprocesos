@@ -18,10 +18,11 @@ public class Ej1{
         double dN1 = oTeclado.nextDouble();oTeclado.nextLine();
         System.out.println("Dime el segundo numero:");
         double dN2 = oTeclado.nextDouble();oTeclado.nextLine();
-        System.out.println("Dime la operacion: 'mas','menos','por'");
+        System.out.println("Dime la operacion: 'mas','menos','por','entre'");
         String sOperacion = oTeclado.nextLine();
 
         oTeclado.close();
+
         //Lanzamos el segundo programa y le mandamos las variables como argumentos
         mvLanzarOperacion(dN1,dN2,sOperacion);
     }//main()
